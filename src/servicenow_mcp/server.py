@@ -29,7 +29,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Define path for the configuration file
-TOOL_PACKAGE_CONFIG_PATH = os.getenv("TOOL_PACKAGE_CONFIG_PATH", "config/tool_packages.yaml")
+_DEFAULT_CONFIG = os.path.join(os.path.dirname(__file__), "config", "tool_packages.yaml")
+TOOL_PACKAGE_CONFIG_PATH = os.getenv("TOOL_PACKAGE_CONFIG_PATH", _DEFAULT_CONFIG)
 
 
 def serialize_tool_output(result: Any, tool_name: str) -> str:
@@ -122,7 +123,6 @@ class ServiceNowMCP:
         """Load tool package definitions from the YAML configuration file."""
         config_path = TOOL_PACKAGE_CONFIG_PATH
         if not os.path.isabs(config_path):
-            config_path = os.path.join(os.path.dirname(__file__), "..", "..", config_path)
             config_path = os.path.abspath(config_path)
 
         try:
